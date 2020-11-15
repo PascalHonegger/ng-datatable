@@ -38,5 +38,5 @@ export class Paginator implements OnChanges {
         this.rowsOnPage = event.rowsOnPage;
         this.dataLength = event.dataLength;
         this.lastPage = Math.ceil(this.dataLength / this.rowsOnPage);
-    }
+    };
 }

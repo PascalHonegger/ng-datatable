@@ -21,10 +21,10 @@ export class DefaultSorter implements OnInit {
 
     public ngOnInit(): void {
         this.mfTable.onSortChange.subscribe((event: SortEvent) => {
-            // tslint:disable:triple-equals
+            /* eslint-disable eqeqeq */
             this.isSortedByMeAsc = (event.sortBy == this.sortBy && event.sortOrder == "asc");
             this.isSortedByMeDesc = (event.sortBy == this.sortBy && event.sortOrder == "desc");
-            // tslint:enable:triple-equals
+            /* eslint-enable eqeqeq */
         });
     }
 
