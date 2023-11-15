@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "strict": true,
@@ -12,6 +11,7 @@
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "noUnusedLocals": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -30,8 +30,8 @@
     ],
     "paths": {
       "ng-datatable": [
-        "dist/ng-datatable/ng-datatable",
-        "dist/ng-datatable"
+        "./dist/ng-datatable/ng-datatable",
+        "./dist/ng-datatable"
       ]
     }
   },

@@ -79,11 +79,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
-            "main": "projects/demo/src/main.ts",
+            "browser": "projects/demo/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -94,23 +94,10 @@
             "scripts": [],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            ]
           },
           "configurations": {
             "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -124,7 +111,11 @@
                 }
               ]
             },
-            "development": {}
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
           },
           "defaultConfiguration": "production"
         },
@@ -133,10 +124,10 @@
           "options": {},
           "configurations": {
             "production": {
-              "browserTarget": "demo:build:production"
+              "buildTarget": "demo:build:production"
             },
             "development": {
-              "browserTarget": "demo:build:development"
+              "buildTarget": "demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -144,7 +135,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "demo:build"
+            "buildTarget": "demo:build"
           }
         },
         "lint": {

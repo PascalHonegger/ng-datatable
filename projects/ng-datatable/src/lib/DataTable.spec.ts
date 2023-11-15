@@ -14,10 +14,10 @@ describe("DataTable directive tests", () => {
     let datatable: DataTable;
     let fixture: ComponentFixture<TestComponent>;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
             declarations: [DataTable, TestComponent]
-        });
+        }).compileComponents();
         fixture = TestBed.createComponent(TestComponent);
         datatable = fixture.debugElement.query(By.directive(DataTable)).injector.get(DataTable) as DataTable;
 
