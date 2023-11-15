@@ -1,5 +1,11 @@
 # Changelog
 
+## 17.0.0 (2023-11-15)
+
+Changes
+
+- Use Angular 17
+- Switch dev setup to PNPM (no library-user impact expected)
 
 ## 16.0.1 & 16.0.2 (2023-05-04)
 
