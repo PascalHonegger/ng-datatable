@@ -1,14 +1,15 @@
 {
   "name": "ng-datatable",
   "version": "0.0.0",
+  "packageManager": "pnpm@8.10.5",
   "scripts": {
     "ng": "ng",
-    "start": "npm run build:lib && ng serve demo",
+    "start": "pnpm run build:lib && ng serve demo",
     "build:lib": "ng build ng-datatable",
     "test": "ng test",
     "lint": "ng lint",
-    "publish:prod": "npm run build:lib && cd dist/ng-datatable && npm publish",
-    "publish:dev": "npm run build:lib && cd dist/ng-datatable && npm publish --tag dev"
+    "publish:prod": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish",
+    "publish:dev": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish --tag dev"
   },
   "author": "pascal.honegger@bluewin.ch",
   "license": "MIT",
