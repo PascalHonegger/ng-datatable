@@ -4,8 +4,9 @@
 
 Changes
 
-- Use Angular 18
-- Use new control flow interally
+- Use Angular 18 (closes #17 and #18)
+- Use new control flow
+- Add Generics for better type support (potentially breaking!)
 
 ## 17.0.0 (2023-11-15)
 

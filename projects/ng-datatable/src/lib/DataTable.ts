@@ -6,8 +6,8 @@ import { ReplaySubject } from "rxjs";
 
 
 export type SortOrder = "asc" | "desc";
-export type SortByFunction = (data: any) => any;
-export type SortBy = string | SortByFunction | (string | SortByFunction)[];
+export type SortByFunction<T = any> = (data: T) => any;
+export type SortBy<T = any> = string | SortByFunction<T> | (string | SortByFunction<T>)[];
 
 export interface SortEvent {
     sortBy: SortBy;
@@ -28,14 +28,14 @@ export interface DataEvent {
     selector: "table[mfData]",
     exportAs: "mfDataTable"
 })
-export class DataTable implements OnChanges, DoCheck {
+export class DataTable<T = any> implements OnChanges, DoCheck {
 
-    private diff: IterableDiffer<any>;
-    @Input("mfData") public inputData: any[] = [];
+    private diff: IterableDiffer<T>;
+    @Input("mfData") public inputData: T[] = [];
 
-    @Input("mfSortBy") public sortBy: SortBy = "";
+    @Input("mfSortBy") public sortBy: SortBy<T> = "";
     @Input("mfSortOrder") public sortOrder: SortOrder = "asc";
-    @Output("mfSortByChange") public sortByChange = new EventEmitter<SortBy>();
+    @Output("mfSortByChange") public sortByChange = new EventEmitter<SortBy<T>>();
     @Output("mfSortOrderChange") public sortOrderChange = new EventEmitter<SortOrder>();
 
     @Input("mfRowsOnPage") public rowsOnPage = 1000;
@@ -43,7 +43,7 @@ export class DataTable implements OnChanges, DoCheck {
 
     private mustRecalculateData = false;
 
-    public data: any[];
+    public data: T[];
 
     public onSortChange = new ReplaySubject<SortEvent>(1);
     public onPageChange = new EventEmitter<PageEvent>();
@@ -56,7 +56,7 @@ export class DataTable implements OnChanges, DoCheck {
         return { sortBy: this.sortBy, sortOrder: this.sortOrder };
     }
 
-    public setSort(sortBy: SortBy, sortOrder: SortOrder): void {
+    public setSort(sortBy: SortBy<T>, sortOrder: SortOrder): void {
         if (this.sortBy !== sortBy || this.sortOrder !== sortOrder) {
             this.sortBy = sortBy;
             this.sortOrder = ["asc", "desc"].indexOf(sortOrder) >= 0 ? sortOrder : "asc";
@@ -191,7 +191,7 @@ export class DataTable implements OnChanges, DoCheck {
         return left > right ? 1 : -1;
     }
 
-    private sorter<T>(sortBy: SortBy, sortOrder: SortOrder): (left: T, right: T) => number {
+    private sorter<T>(sortBy: SortBy<T>, sortOrder: SortOrder): (left: T, right: T) => number {
         const order = sortOrder === "desc" ? -1 : 1;
         if (Array.isArray(sortBy)) {
             const iteratees = sortBy.map((entry) => this.caseInsensitiveIteratee(entry));

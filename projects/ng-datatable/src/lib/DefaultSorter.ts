@@ -16,13 +16,13 @@ import {DataTable, SortBy, SortEvent} from "./DataTable";
             "a { cursor: pointer; }"
         ]
 })
-export class DefaultSorter implements OnInit {
-    @Input("by") sortBy: SortBy;
+export class DefaultSorter<T = any> implements OnInit {
+    @Input("by") sortBy: SortBy<T>;
 
     isSortedByMeAsc = false;
     isSortedByMeDesc = false;
 
-    public constructor(private mfTable: DataTable) {
+    public constructor(private mfTable: DataTable<T>) {
     }
 
     public ngOnInit(): void {

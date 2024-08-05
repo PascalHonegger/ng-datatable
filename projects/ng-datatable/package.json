@@ -17,7 +17,8 @@
     "table",
     "pagination",
     "sort",
-    "sorting"
+    "sorting",
+    "signals"
   ],
   "author": "git@honegger.dev",
   "license": "MIT",

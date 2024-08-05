@@ -19,7 +19,7 @@ describe("DataTable directive tests", () => {
             declarations: [DataTable, TestComponent]
         }).compileComponents();
         fixture = TestBed.createComponent(TestComponent);
-        datatable = fixture.debugElement.query(By.directive(DataTable)).injector.get(DataTable) as DataTable;
+        datatable = fixture.debugElement.query(By.directive(DataTable)).injector.get(DataTable);
 
         datatable.inputData = [
             {id: 3, name: "banana"},
