@@ -1,5 +1,12 @@
 # Changelog
 
+## 18.0.0 (2023-11-15)
+
+Changes
+
+- Use Angular 18
+- Use new control flow interally
+
 ## 17.0.0 (2023-11-15)
 
 Changes
