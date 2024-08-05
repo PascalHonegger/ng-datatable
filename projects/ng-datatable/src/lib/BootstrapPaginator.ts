@@ -1,10 +1,10 @@
-import {Component, Input, OnChanges} from "@angular/core";
+import {Component, computed, input} from "@angular/core";
 import {DataTable} from "./DataTable";
 
 @Component({
     selector: "mfBootstrapPaginator",
     template: `
-    <mfPaginator #p [mfTable]="mfTable">
+    <mfPaginator #p [mfTable]="mfTable()">
       @if (p.dataLength > p.rowsOnPage) {
         <ul class="pagination float-start">
           <li class="page-item" [class.disabled]="p.activePage <= 1" (click)="p.setPage(1)">
@@ -58,9 +58,9 @@ import {DataTable} from "./DataTable";
           </li>
         </ul>
       }
-      @if (p.dataLength > minRowsOnPage) {
+      @if (p.dataLength > minRowsOnPage()) {
         <ul class="pagination float-end">
-          @for (rows of rowsOnPageSet; track rows) {
+          @for (rows of rowsOnPageSet(); track rows) {
             <li class="page-item" [class.active]="p.rowsOnPage===rows" (click)="p.setRowsOnPage(rows)">
               <a class="page-link">{{rows}}</a>
             </li>
@@ -73,15 +73,9 @@ import {DataTable} from "./DataTable";
         ".page-link { cursor: pointer; }"
     ]
 })
-export class BootstrapPaginator implements OnChanges {
-    @Input() rowsOnPageSet: number[] = [];
-    @Input() mfTable: DataTable;
+export class BootstrapPaginator {
+    rowsOnPageSet = input<number[]>([]);
+    mfTable = input<DataTable>();
 
-    minRowsOnPage = 0;
-
-    ngOnChanges(changes: any): any {
-        if (changes.rowsOnPageSet) {
-            this.minRowsOnPage = this.rowsOnPageSet.reduce((previous, current) => current < previous ? current : previous);
-        }
-    }
+    minRowsOnPage = computed(() => this.rowsOnPageSet().reduce((previous, current) => current < previous ? current : previous, 0));
 }
