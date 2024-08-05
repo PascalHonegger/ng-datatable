@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {DataTableModule, SortBy, SortOrder} from "ng-datatable";
 import { FormsModule } from "@angular/forms";
 import { DataFilterPipe } from "./data-filter.pipe";
@@ -13,7 +13,6 @@ import { CommonModule } from "@angular/common";
         CommonModule,
         DataTableModule,
         FormsModule,
-        HttpClientModule,
         DataFilterPipe
     ]
 })
