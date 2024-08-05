@@ -11,7 +11,7 @@
     "publish:prod": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish",
     "publish:dev": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish --tag dev"
   },
-  "author": "pascal.honegger@bluewin.ch",
+  "author": "git@honegger.dev",
   "license": "MIT",
   "repository": {
     "type": "git",
