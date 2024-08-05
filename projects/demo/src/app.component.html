@@ -3,104 +3,106 @@
     <h1>
       <span
         ><a
-          href="https://www.npmjs.com/package/@pascalhonegger/ng-datatable"
-          target="_blank"
-          >Angular DataTable component</a
+        href="https://www.npmjs.com/package/@pascalhonegger/ng-datatable"
+        target="_blank"
+        >Angular DataTable component</a
         ></span
-      ><br />
-      <small class="blockquote"
-        >by
-        <a href="https://github.com/PascalHonegger">PascalHonegger</a></small
-      >
-    </h1>
-  </div>
+        ><br />
+        <small class="blockquote"
+          >by
+          <a href="https://github.com/PascalHonegger">PascalHonegger</a></small
+          >
+        </h1>
+      </div>
 
-  <div class="row g-2">
-    <div class="col-2 form-floating">
-      <select class="form-select" id="rowsOnPage" [(ngModel)]="rowsOnPage">
-        <option [ngValue]="5">5</option>
-        <option [ngValue]="10">10</option>
-        <option [ngValue]="15">15</option>
-      </select>
-      <label for="rowsOnPage">Rows on page</label>
-    </div>
-    <div class="col-4 form-floating">
-      <select class="form-select" id="sortBy" [(ngModel)]="sortBy">
-        <option ngValue="name">Name</option>
-        <option ngValue="email">Email</option>
-        <option ngValue="age">Age</option>
-        <option [ngValue]="sortByWordLength">City</option>
-      </select>
-      <label for="sortBy" class="form-label">Sort by</label>
-    </div>
-    <div class="col-6 form-floating">
-      <select class="form-select" id="sortOrder" [(ngModel)]="sortOrder">
-        <option ngValue="asc">Ascending</option>
-        <option ngValue="desc">Descending</option>
-        <option ngValue="badValue">Bad value</option>
-      </select>
-      <label for="sortOrder" class="form-label">Sort order</label>
-    </div>
-  </div>
-  <div class="card mt-3">
-    <div class="card-header">User information</div>
+      <div class="row g-2">
+        <div class="col-2 form-floating">
+          <select class="form-select" id="rowsOnPage" [(ngModel)]="rowsOnPage">
+            <option [ngValue]="5">5</option>
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="15">15</option>
+          </select>
+          <label for="rowsOnPage">Rows on page</label>
+        </div>
+        <div class="col-4 form-floating">
+          <select class="form-select" id="sortBy" [(ngModel)]="sortBy">
+            <option ngValue="name">Name</option>
+            <option ngValue="email">Email</option>
+            <option ngValue="age">Age</option>
+            <option [ngValue]="sortByWordLength">City</option>
+          </select>
+          <label for="sortBy" class="form-label">Sort by</label>
+        </div>
+        <div class="col-6 form-floating">
+          <select class="form-select" id="sortOrder" [(ngModel)]="sortOrder">
+            <option ngValue="asc">Ascending</option>
+            <option ngValue="desc">Descending</option>
+            <option ngValue="badValue">Bad value</option>
+          </select>
+          <label for="sortOrder" class="form-label">Sort order</label>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <div class="card-header">User information</div>
 
-    <div class="card-body">
-        <div class="mb-3 row">
+        <div class="card-body">
+          <div class="mb-3 row">
             <label for="filterQuery" class="col-sm-2 col-form-label">Filter by name</label>
             <div class="col-sm-10">
               <input class="form-control" id="filterQuery" [(ngModel)]="filterQuery" />
             </div>
           </div>
-        <div class="form-floating">
-        </div>
+          <div class="form-floating">
+          </div>
 
-      <table
-        class="table table-striped"
-        [mfData]="data | dataFilter: filterQuery"
-        #mf="mfDataTable"
-        [mfRowsOnPage]="rowsOnPage"
-        [(mfSortBy)]="sortBy"
-        [(mfSortOrder)]="sortOrder"
-      >
-        <thead>
-          <tr>
-            <th scope="col" style="width: 10%"></th>
-            <th scope="col" style="width: 20%">
-              <mfDefaultSorter by="name">Name</mfDefaultSorter>
-            </th>
-            <th scope="col" style="width: 40%">
-              <mfDefaultSorter by="email">Email</mfDefaultSorter>
-            </th>
-            <th scope="col" style="width: 10%">
-              <mfDefaultSorter by="age">Age</mfDefaultSorter>
-            </th>
-            <th scope="col" style="width: 20%">
-              <mfDefaultSorter [by]="sortByWordLength">City</mfDefaultSorter>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of mf.data">
-            <td>
-              <button (click)="remove(item)" class="btn btn-danger">X</button>
-            </td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.email }}</td>
-            <td class="text-end">{{ item.age }}</td>
-            <td>{{ item.city | uppercase }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="5">
-              <mfBootstrapPaginator
-                [rowsOnPageSet]="[5, 10, 15]"
-              ></mfBootstrapPaginator>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          <table
+            class="table table-striped"
+            [mfData]="data | dataFilter: filterQuery"
+            #mf="mfDataTable"
+            [mfRowsOnPage]="rowsOnPage"
+            [(mfSortBy)]="sortBy"
+            [(mfSortOrder)]="sortOrder"
+            >
+            <thead>
+              <tr>
+                <th scope="col" style="width: 10%"></th>
+                <th scope="col" style="width: 20%">
+                  <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                </th>
+                <th scope="col" style="width: 40%">
+                  <mfDefaultSorter by="email">Email</mfDefaultSorter>
+                </th>
+                <th scope="col" style="width: 10%">
+                  <mfDefaultSorter by="age">Age</mfDefaultSorter>
+                </th>
+                <th scope="col" style="width: 20%">
+                  <mfDefaultSorter [by]="sortByWordLength">City</mfDefaultSorter>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of mf.data; track item) {
+                <tr>
+                  <td>
+                    <button (click)="remove(item)" class="btn btn-danger">X</button>
+                  </td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.email }}</td>
+                  <td class="text-end">{{ item.age }}</td>
+                  <td>{{ item.city | uppercase }}</td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+                  <mfBootstrapPaginator
+                    [rowsOnPageSet]="[5, 10, 15]"
+                  ></mfBootstrapPaginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
-</div>

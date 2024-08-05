@@ -3,17 +3,17 @@ import {HttpClient} from "@angular/common/http";
 import {DataTableModule, SortBy, SortOrder} from "ng-datatable";
 import { FormsModule } from "@angular/forms";
 import { DataFilterPipe } from "./data-filter.pipe";
-import { CommonModule } from "@angular/common";
+import { UpperCasePipe } from "@angular/common";
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
     standalone: true,
     imports: [
-        CommonModule,
         DataTableModule,
         FormsModule,
-        DataFilterPipe
+        DataFilterPipe,
+        UpperCasePipe
     ]
 })
 export class AppComponent implements OnInit {

@@ -5,9 +5,12 @@ import {DataTable, SortBy, SortEvent} from "./DataTable";
     selector: "mfDefaultSorter",
     template: `
         <a (click)="sort()" (keydown.enter)="sort()" (keydown.space)="sort()" class="text-nowrap text-decoration-none" tabindex="0">
-            <ng-content></ng-content>
-            <span *ngIf="isSortedByMeAsc" aria-hidden="true" aria-label="asc">▲</span>
-            <span *ngIf="isSortedByMeDesc" aria-hidden="true" aria-label="desc">▼</span>
+          <ng-content></ng-content>
+          @if (isSortedByMeAsc) {
+            <span aria-hidden="true" aria-label="asc">▲</span>
+          } @else if (isSortedByMeDesc) {
+            <span aria-hidden="true" aria-label="desc">▼</span>
+          }
         </a>`,
         styles: [
             "a { cursor: pointer; }"
