@@ -1,5 +1,6 @@
 import {Component, computed, input} from "@angular/core";
 import {DataTable} from "./DataTable";
+import { Paginator } from "./Paginator";
 
 @Component({
     selector: "mfBootstrapPaginator",
@@ -71,7 +72,8 @@ import {DataTable} from "./DataTable";
     `,
     styles: [
         ".page-link { cursor: pointer; }"
-    ]
+    ],
+    imports: [Paginator]
 })
 export class BootstrapPaginator {
     rowsOnPageSet = input<number[]>([]);

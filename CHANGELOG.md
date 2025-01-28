@@ -1,5 +1,13 @@
 # Changelog
 
+## 19.0.0 (2025-01-28)
+
+Changes
+
+- Use Angular 19 (closes #19)
+- Mark input `by` of `mfDefaultSorter` as required (breaking!)
+- Migrate to Signals (potentially breaking!)
+
 ## 18.0.0 (2024-08-06)
 
 Changes

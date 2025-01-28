@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {DataTableModule, SortBy, SortOrder} from "ng-datatable";
 import { FormsModule } from "@angular/forms";
@@ -8,7 +8,6 @@ import { UpperCasePipe } from "@angular/common";
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
-    standalone: true,
     imports: [
         DataTableModule,
         FormsModule,
@@ -17,15 +16,14 @@ import { UpperCasePipe } from "@angular/common";
     ]
 })
 export class AppComponent implements OnInit {
+    private http = inject(HttpClient);
+
 
     public data: any[];
     public filterQuery = "";
     public rowsOnPage = 10;
     public sortBy: SortBy = "email";
     public sortOrder: SortOrder = "asc";
-
-    constructor(private http: HttpClient) {
-    }
 
     ngOnInit(): void {
         this.http.get<any[]>("/data.json")

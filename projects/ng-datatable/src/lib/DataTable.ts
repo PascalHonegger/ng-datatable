@@ -1,7 +1,4 @@
-import {
-    Directive, Input, EventEmitter, SimpleChange, OnChanges, DoCheck, IterableDiffers,
-    IterableDiffer, Output
-} from "@angular/core";
+import { Directive, Input, EventEmitter, OnChanges, DoCheck, IterableDiffers, IterableDiffer, Output, inject, SimpleChanges } from "@angular/core";
 import { ReplaySubject } from "rxjs";
 
 
@@ -48,7 +45,9 @@ export class DataTable<T = any> implements OnChanges, DoCheck {
     public onSortChange = new ReplaySubject<SortEvent>(1);
     public onPageChange = new EventEmitter<PageEvent>();
 
-    public constructor(differs: IterableDiffers) {
+    public constructor() {
+        const differs = inject(IterableDiffers);
+
         this.diff = differs.find([]).create();
     }
 
@@ -102,7 +101,7 @@ export class DataTable<T = any> implements OnChanges, DoCheck {
         });
     }
 
-    public ngOnChanges(changes: { [key: string]: SimpleChange }): any {
+    public ngOnChanges(changes: SimpleChanges): any {
         if (changes["rowsOnPage"]) {
             this.rowsOnPage = changes["rowsOnPage"].previousValue;
             this.setPage(this.activePage, changes["rowsOnPage"].currentValue);

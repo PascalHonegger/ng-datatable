@@ -1,4 +1,4 @@
-import {Component, Input, SimpleChange, OnChanges, Optional} from "@angular/core";
+import { Component, OnChanges, inject, input } from "@angular/core";
 import {DataTable, PageEvent} from "./DataTable";
 
 @Component({
@@ -6,8 +6,9 @@ import {DataTable, PageEvent} from "./DataTable";
     template: `<ng-content></ng-content>`
 })
 export class Paginator implements OnChanges {
+    private injectMfTable = inject(DataTable, { optional: true })!;
 
-    @Input("mfTable") inputMfTable: DataTable | undefined;
+    readonly inputMfTable = input<DataTable>(undefined, { alias: "mfTable" });
 
     private mfTable: DataTable;
 
@@ -16,11 +17,8 @@ export class Paginator implements OnChanges {
     public dataLength = 0;
     public lastPage: number;
 
-    public constructor(@Optional() private injectMfTable: DataTable) {
-    }
-
-    public ngOnChanges(changes: {[key: string]: SimpleChange}): any {
-        this.mfTable = this.inputMfTable || this.injectMfTable;
+    public ngOnChanges(): any {
+        this.mfTable = this.inputMfTable() ?? this.injectMfTable;
         this.onPageChangeSubscriber(this.mfTable.getPage());
         this.mfTable.onPageChange.subscribe(this.onPageChangeSubscriber);
     }

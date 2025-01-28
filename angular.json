@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
     "analytics": false,
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": ["angular-eslint"]
   },
   "version": 1,
   "newProjectRoot": "projects",
@@ -43,7 +43,8 @@
             "lintFilePatterns": [
               "projects/ng-datatable/**/*.ts",
               "projects/ng-datatable/**/*.html"
-            ]
+            ],
+            "eslintConfig": "projects/ng-datatable/eslint.config.mjs"
           }
         }
       }
@@ -144,7 +145,8 @@
             "lintFilePatterns": [
               "projects/demo/**/*.ts",
               "projects/demo/**/*.html"
-            ]
+            ],
+            "eslintConfig": "projects/demo/eslint.config.mjs"
           }
         }
       }

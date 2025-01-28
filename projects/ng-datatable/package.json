@@ -8,7 +8,7 @@
   },
   "keywords": [
     "angular",
-    "angular18",
+    "angular19",
     "angularcli",
     "ivy",
     "ng",
@@ -18,7 +18,8 @@
     "pagination",
     "sort",
     "sorting",
-    "signals"
+    "signals",
+    "pnpm"
   ],
   "author": "git@honegger.dev",
   "license": "MIT",
@@ -27,8 +28,8 @@
   },
   "homepage": "https://github.com/PascalHonegger/ng-datatable#readme",
   "peerDependencies": {
-    "@angular/common": "^18.0.0",
-    "@angular/core": "^18.0.0"
+    "@angular/common": "^19.0.0",
+    "@angular/core": "^19.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"

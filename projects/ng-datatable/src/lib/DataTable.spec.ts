@@ -4,9 +4,7 @@ import {TestBed, ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
 import {switchMap, range} from "rxjs";
 
-@Component({
-    template: `<table [mfData]="[]"></table>`
-})
+@Component({ template: `<table [mfData]="[]"></table>`, imports: [DataTable] })
 class TestComponent {
 }
 
@@ -14,11 +12,10 @@ describe("DataTable directive tests", () => {
     let datatable: DataTable;
     let fixture: ComponentFixture<TestComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [DataTable, TestComponent]
-        }).compileComponents();
-        fixture = TestBed.createComponent(TestComponent);
+    beforeEach(() => {
+        fixture = TestBed.configureTestingModule({
+            imports: [TestComponent]
+        }).createComponent(TestComponent);
         datatable = fixture.debugElement.query(By.directive(DataTable)).injector.get(DataTable);
 
         datatable.inputData = [

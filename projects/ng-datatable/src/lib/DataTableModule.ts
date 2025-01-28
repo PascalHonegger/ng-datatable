@@ -6,7 +6,7 @@ import {Paginator} from "./Paginator";
 import {BootstrapPaginator} from "./BootstrapPaginator";
 
 @NgModule({
-    declarations: [
+    imports: [
         DataTable,
         DefaultSorter,
         Paginator,
