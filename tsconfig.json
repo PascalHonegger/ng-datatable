@@ -16,10 +16,9 @@
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "preserve",
     "paths": {
       "ng-datatable": [
         "./dist/ng-datatable/ng-datatable",

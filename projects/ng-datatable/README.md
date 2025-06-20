@@ -1,5 +1,5 @@
 # Table component with sorting and pagination for Angular
-It is a forked version of [ng-datatable](https://github.com/cmglez10/ng-datatable) updated to Angular 19 and Signals.
+It is a forked version of [ng-datatable](https://github.com/cmglez10/ng-datatable) updated to Angular 20 and Signals.
 
 [![npm version](https://badge.fury.io/js/%40pascalhonegger%2Fng-datatable.svg)](https://badge.fury.io/js/%40pascalhonegger%2Fng-datatable)
 
