@@ -1,5 +1,13 @@
 # Changelog
 
+## 20.0.0 (2025-06-20)
+
+Changes
+
+- Use Angular 20 (closes #20)
+
+*Note: This library does not work with zoneless at the moment, contributions are welcome!*
+
 ## 19.0.0 (2025-01-28)
 
 Changes
