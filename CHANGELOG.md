@@ -4,7 +4,7 @@
 
 Changes
 
-- Breaking using Angular 20 standalone
+- Breaking using Angular 20 standalone, signals, zoneless
 
 ```typescript
 imports: [
