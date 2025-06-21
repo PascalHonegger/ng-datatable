@@ -1,4 +1,11 @@
-import { Component, OnChanges, inject, input } from "@angular/core";
+import {
+  Component,
+  OnChanges,
+  computed,
+  inject,
+  input,
+  signal,
+} from "@angular/core";
 import { DataTable, PageEvent } from "./DataTable";
 
 @Component({
@@ -12,10 +19,14 @@ export class Paginator implements OnChanges {
 
   #mfTable: DataTable;
 
-  activePage: number;
-  rowsOnPage: number;
-  dataLength = 0;
-  lastPage: number;
+  activePage = signal<number>(0);
+  rowsOnPage = signal<number>(0);
+  dataLength = signal<number>(0);
+  lastPage = computed(() =>
+    this.rowsOnPage() === 0
+      ? 0
+      : Math.ceil(this.dataLength() / this.rowsOnPage())
+  );
 
   ngOnChanges(): any {
     this.#mfTable = this.inputMfTable() ?? this.#injectMfTable;
@@ -24,17 +35,16 @@ export class Paginator implements OnChanges {
   }
 
   setPage(pageNumber: number): void {
-    this.#mfTable.setPage(pageNumber, this.rowsOnPage);
+    this.#mfTable.setPage(pageNumber, this.rowsOnPage());
   }
 
   setRowsOnPage(rowsOnPage: number): void {
-    this.#mfTable.setPage(this.activePage, rowsOnPage);
+    this.#mfTable.setPage(this.activePage(), rowsOnPage);
   }
 
   #onPageChangeSubscriber = (event: PageEvent) => {
-    this.activePage = event.activePage;
-    this.rowsOnPage = event.rowsOnPage;
-    this.dataLength = event.dataLength;
-    this.lastPage = Math.ceil(this.dataLength / this.rowsOnPage);
+    this.activePage.set(event.activePage);
+    this.rowsOnPage.set(event.rowsOnPage);
+    this.dataLength.set(event.dataLength);
   };
 }
