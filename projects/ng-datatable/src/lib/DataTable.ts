@@ -9,6 +9,7 @@ import {
   inject,
   SimpleChanges,
   model,
+  output
 } from "@angular/core";
 import { ReplaySubject } from "rxjs";
 
@@ -45,7 +46,7 @@ export class DataTable<T = any> implements OnChanges, DoCheck {
   readonly sortBy = model<SortBy<T>>("", { alias: "mfSortBy" });
   readonly sortOrder = model<SortOrder>("asc", { alias: "mfSortOrder" });
   @Output("mfSortByChange") sortByChange = new EventEmitter<SortBy<T>>();
-  @Output("mfSortOrderChange") sortOrderChange = new EventEmitter<SortOrder>();
+  readonly sortOrderChange = output<SortOrder>({ alias: 'mfSortOrderChange' });
 
   readonly rowsOnPage = model(1000, { alias: "mfRowsOnPage" });
   readonly activePage = model(1, { alias: "mfActivePage" });
