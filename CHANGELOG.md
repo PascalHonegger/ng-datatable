@@ -1,12 +1,26 @@
 # Changelog
 
+## 20.1.0 (2025-06-21)
+
+Changes
+
+- Use Angular 20 standalone
+
+```typescript
+imports: [
+    DataTable,
+    DefaultSorter,
+    BootstrapPaginator,
+  ],
+```
+
 ## 20.0.0 (2025-06-20)
 
 Changes
 
 - Use Angular 20 (closes #20)
 
-*Note: This library does not work with zoneless at the moment, contributions are welcome!*
+_Note: This library does not work with zoneless at the moment, contributions are welcome!_
 
 ## 19.0.0 (2025-01-28)
 
@@ -44,11 +58,13 @@ Changes
 - Use Angular 16
 
 ## 15.1.2 (2023-04-24)
+
 Changes
 
 - Update dependencies to latest, fixes security alert
 
 ## 15.1.1 (2023-02-18)
+
 Changes
 
 - Update dependencies to latest (closes #13)
@@ -109,31 +125,31 @@ Changes:
 ## 11.1.0 (2020-11-23)
 
 Changes:
-    
+
     - Remove dependency to lodash
 
 ## 11.0.1 (2020-11-23)
 
 Changes:
-    
+
     - Specify correct peer dependency version
 
 ## 11.0.0 (2020-11-15)
 
 Changes:
-    
+
     - Use Angular 11
 
 ## 10.0.0 (2020-06-27)
 
 Changes:
-    
+
     - Use Angular 10
 
 ## 9.0.1 (2019-11-06)
 
 Changes:
-    
+
     - Use Angular 9
     - Use Angular CLI for build pipeline
     - Fix some linting issues
@@ -141,42 +157,42 @@ Changes:
 ## 8.0.0 (2019-11-06)
 
 Changes:
-    
+
     - Use Angular 8
 
 ## 2.0.0 (2018-07-10)
 
 Changes:
-    
+
     - Published as package @pascalhonegger/ng-datatable
     - Use Angular 7
 
 ## 0.7.3 (2018-10-04)
 
 Changes:
-    
+
     - Security updates in dependencies.
 
 ## 0.7.2 (2018-10-03)
 
 Changes:
-    
+
     - Updated examples dependencies. (Thanks to @PascalHonegger)
 
 ## 0.7.1 (2018-10-03)
 
 Changes:
-    
+
     - Angular and RxJS get updated to version 6 (see package.json). The only code changes include changes to systemjs.config and two import statements.
     (Pull Request #3. Thanks to @PascalHonegger)
 
 ## 0.7.0 (2018-03-15)
 
 Changes:
-    
+
     - First commit of forked project (@cmglez10/ng-datatable)
     - Updated to Angular 5
-    
+
 ## 0.6.0 (2017-03-27)
 
 Fixes:
@@ -186,9 +202,9 @@ Fixes:
 ## 0.5.2 (2016-11-13)
 
 Changes:
-    
+
     - added inputs/outputs for sorting (#14)
-    
+
 Bugfixes:
 
     - detect changes in inputData array (#10)
@@ -198,10 +214,10 @@ Bugfixes:
 ## 0.5.1 (2016-10-25)
 
 Changes:
-    
+
     - changed the old "typings" system to the new "@types" system
     - added support for AOT compilation
-    
+
 Bugfixes:
 
     - sorting by child properties (#41)
@@ -211,12 +227,12 @@ Bugfixes:
 Breaking changes:
 
     - update angular library to 2.0.0
-    
+
 Bugfixes:
 
     - sort case insensitive
     - fixed pagination, fix #29, #33
-    
+
 #Changelog
 
 ## 0.4.2 (2016-05-11)
@@ -254,10 +270,9 @@ Bugfixes:
 
     - remove `href` attribute from DefaultSorter
     - add style `cursor: pointer` to links in DefaultSorter and BootstrapPaginator
-    
+
 ## 0.2.2 (2016-03-21)
 
 Bugfixes:
 
     - remove `href` attribute from BootstrapPaginator template
-    
