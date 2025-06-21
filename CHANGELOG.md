@@ -4,7 +4,7 @@
 
 Changes
 
-- Use Angular 20 standalone
+- Breaking using Angular 20 standalone
 
 ```typescript
 imports: [

@@ -25,7 +25,7 @@ describe("DataTable directive tests", () => {
             {id: 5, name: "Ðrone"},
             {id: 4, name: "Ananas"}
         ];
-        datatable.ngOnChanges({inputData: new SimpleChange(null, datatable.inputData, false)});
+        datatable.ngOnChanges({inputData: new SimpleChange(null, datatable.inputData(), false)});
     });
 
     describe("initializing", () => {
@@ -38,7 +38,7 @@ describe("DataTable directive tests", () => {
 
         it("data should be equal to inputData", () => {
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
+            expect(datatable.data).toEqual(datatable.inputData());
         });
 
         it("data should be 2 first items", () => {
@@ -131,8 +131,8 @@ describe("DataTable directive tests", () => {
             datatable.sortBy = "id";
             datatable.sortOrder = "asc";
             datatable.ngOnChanges({
-                sortBy: new SimpleChange(null, datatable.sortBy, true),
-                sortOrder: new SimpleChange(null, datatable.sortOrder, true)
+                sortBy: new SimpleChange(null, datatable.sortBy(), true),
+                sortOrder: new SimpleChange(null, datatable.sortOrder(), true)
             });
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([
@@ -154,8 +154,8 @@ describe("DataTable directive tests", () => {
             datatable.sortBy = "id";
             datatable.sortOrder = "desc";
             datatable.ngOnChanges({
-                sortBy: new SimpleChange(null, datatable.sortBy, false),
-                sortOrder: new SimpleChange(null, datatable.sortOrder, false)
+                sortBy: new SimpleChange(null, datatable.sortBy(), false),
+                sortOrder: new SimpleChange(null, datatable.sortOrder(), false)
             });
             datatable.ngDoCheck();
 
@@ -170,10 +170,10 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
             datatable.sortBy = "id";
             datatable.ngOnChanges({
-                sortBy: new SimpleChange(null, datatable.sortBy, false)
+                sortBy: new SimpleChange(null, datatable.sortBy(), false)
             });
             datatable.ngDoCheck();
-            expect(datatable.sortOrder).toEqual("asc");
+            expect(datatable.sortOrder()).toEqual("asc");
         });
 
         it("should set sortOrder to 'asc' if provided something else than 'asc' or 'desc'", (done) => {
@@ -185,12 +185,13 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
             datatable.sortBy = "id";
             datatable.sortOrder = "bulb" as "asc";
+            const sortOrder = datatable.sortOrder();
             datatable.ngOnChanges({
-                sortBy: new SimpleChange(null, datatable.sortBy, false),
-                sortOrder: new SimpleChange(null, datatable.sortOrder, false)
+                sortBy: new SimpleChange(null, datatable.sortBy(), false),
+                sortOrder: new SimpleChange(null, sortOrder, false)
             });
             datatable.ngDoCheck();
-            expect(datatable.sortOrder).toEqual("asc");
+            expect(sortOrder).toEqual("asc");
             expect(datatable.data).toEqual([
                 {id: 1, name: "Duck"},
                 {id: 2, name: "ącki"},
@@ -204,7 +205,7 @@ describe("DataTable directive tests", () => {
             datatable.setSort("id", "bulb" as "desc");
             expect(datatable.getSort()).toEqual({sortBy: "id", sortOrder: "asc"});
             datatable.ngDoCheck();
-            expect(datatable.sortOrder).toEqual("asc");
+            expect(datatable.sortOrder()).toEqual("asc");
             expect(datatable.data).toEqual([
                 {id: 1, name: "Duck"},
                 {id: 2, name: "ącki"},
@@ -221,9 +222,9 @@ describe("DataTable directive tests", () => {
             });
             datatable.ngDoCheck();
             datatable.sortOrder = "desc";
-            datatable.ngOnChanges({sortOrder: new SimpleChange(null, datatable.sortOrder, false)});
+            datatable.ngOnChanges({sortOrder: new SimpleChange(null, datatable.sortOrder(), false)});
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
+            expect(datatable.data).toEqual(datatable.inputData());
         });
 
         it("should call output event when sorting changed", (done) => {
@@ -246,7 +247,7 @@ describe("DataTable directive tests", () => {
             });
             done();
             datatable.sortOrder = "bulb" as "desc";
-            datatable.ngOnChanges({sortOrder: new SimpleChange(null, datatable.sortOrder, false)});
+            datatable.ngOnChanges({sortOrder: new SimpleChange(null, datatable.sortOrder(), false)});
             datatable.ngDoCheck();
         });
         // Wywołanie outputa gdy zmiana z innej strony
@@ -293,7 +294,7 @@ describe("DataTable directive tests", () => {
                 {name: "Claire", age: 7},
                 {name: "Anna", age: 12}
             ];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.setSort(["name", "age"], "asc");
             datatable.ngDoCheck();
 
@@ -316,7 +317,7 @@ describe("DataTable directive tests", () => {
                 {name: "Claire", city: {zip: "11111"}},
                 {name: "Anna", city: {zip: "21111"}}
             ];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.setSort("city.zip", "asc");
             datatable.ngDoCheck();
 
@@ -334,25 +335,25 @@ describe("DataTable directive tests", () => {
     describe("data change", () => {
         it("should refresh data when inputData change", () => {
             const newData = [{id: 5, name: "Ðrone"}, {id: 4, name: "Ananas"}];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 5, name: "Ðrone"}, {id: 4, name: "Ananas"}]);
         });
 
         it("should refresh data when rows removed from inputData", () => {
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
-            datatable.inputData.pop();
+            expect(datatable.data).toEqual(datatable.inputData());
+            datatable.inputData().pop();
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
+            expect(datatable.data).toEqual(datatable.inputData());
         });
 
         it("should refresh data when rows added to inputData", () => {
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
-            datatable.inputData.push({id: 6, name: "Furby"});
+            expect(datatable.data).toEqual(datatable.inputData());
+            datatable.inputData().push({id: 6, name: "Furby"});
             datatable.ngDoCheck();
-            expect(datatable.data).toEqual(datatable.inputData);
+            expect(datatable.data).toEqual(datatable.inputData());
         });
 
         it("should fire onPageChange event after inputData change", (done) => {
@@ -366,7 +367,7 @@ describe("DataTable directive tests", () => {
                 done();
             });
             const newData = [{id: 5, name: "Ðrone"}, {id: 4, name: "Ananas"}];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.ngDoCheck();
         });
 
@@ -380,7 +381,7 @@ describe("DataTable directive tests", () => {
                 expect(opt.rowsOnPage).toEqual(2);
                 done();
             });
-            datatable.inputData.push({id: 6, name: "Furby"});
+            datatable.inputData().push({id: 6, name: "Furby"});
             datatable.ngDoCheck();
         });
 
@@ -394,7 +395,7 @@ describe("DataTable directive tests", () => {
                 expect(opt.rowsOnPage).toEqual(2);
                 done();
             });
-            range(0, 3).forEach(() => datatable.inputData.pop());
+            range(0, 3).forEach(() => datatable.inputData().pop());
             datatable.ngDoCheck();
         });
 
@@ -403,7 +404,7 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
 
             const newData = [{id: 5, name: "Ðrone"}, {id: 4, name: "Ananas"}];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.ngDoCheck();
             expect(datatable.data).toEqual(newData);
         });
@@ -413,9 +414,9 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 2, name: "ącki"}, {id: 5, name: "Ðrone"}]);
 
-            datatable.inputData.pop();
-            datatable.inputData.pop();
-            datatable.inputData.pop();
+            datatable.inputData().pop();
+            datatable.inputData().pop();
+            datatable.inputData().pop();
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 3, name: "banana"}, {id: 1, name: "Duck"}]);
         });
@@ -425,7 +426,7 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
 
             const newData = [{id: 5, name: "Ðrone"}, {id: 1, name: "Duck"}, {id: 4, name: "Ananas"}];
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, newData, false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), newData, false)});
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 1, name: "Duck"}]);
         });
@@ -435,7 +436,7 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 1, name: "Duck"}]);
 
-            datatable.inputData.pop();
+            datatable.inputData().pop();
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 1, name: "Duck"}]);
         });
@@ -445,7 +446,7 @@ describe("DataTable directive tests", () => {
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 1, name: "Duck"}]);
 
-            datatable.inputData.push({id: 6, name: "Furby"});
+            datatable.inputData().push({id: 6, name: "Furby"});
             datatable.ngDoCheck();
             expect(datatable.data).toEqual([{id: 1, name: "Duck"}]);
         });
@@ -454,19 +455,19 @@ describe("DataTable directive tests", () => {
             datatable.setPage(2, 1);
             datatable.ngDoCheck();
 
-            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData, [], false)});
+            datatable.ngOnChanges({inputData: new SimpleChange(datatable.inputData(), [], false)});
             datatable.ngDoCheck();
-            expect(datatable.activePage).toEqual(1);
+            expect(datatable.activePage()).toEqual(1);
         });
 
         it("shouldn't change page to 0 when data is empty after removed rows", () => {
             datatable.setPage(2, 1);
             datatable.ngDoCheck();
 
-            range(0, 5).forEach(() => datatable.inputData.pop());
+            range(0, 5).forEach(() => datatable.inputData().pop());
             datatable.ngDoCheck();
-            expect(datatable.inputData.length).toEqual(0);
-            expect(datatable.activePage).toEqual(1);
+            expect(datatable.inputData().length).toEqual(0);
+            expect(datatable.activePage()).toEqual(1);
         });
     });
 });
