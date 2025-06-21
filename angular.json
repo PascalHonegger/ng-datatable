@@ -30,10 +30,7 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/ng-datatable/tsconfig.spec.json"
           }
         },
@@ -85,17 +82,10 @@
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
             "browser": "projects/demo/src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
             "tsConfig": "projects/demo/tsconfig.app.json",
-            "assets": [
-              "projects/demo/src/data.json"
-            ],
+            "assets": ["projects/demo/src/data.json"],
             "scripts": [],
-            "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ]
+            "styles": ["node_modules/bootstrap/dist/css/bootstrap.min.css"]
           },
           "configurations": {
             "production": {

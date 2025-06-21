@@ -60,9 +60,11 @@
       </div>
       <div class="form-floating"></div>
 
+      @if(data.value()) {
+
       <table
         class="table table-striped"
-        [mfData]="data | dataFilter : filterQuery"
+        [mfData]="data.value() | dataFilter : filterQuery"
         #mf="mfDataTable"
         [mfRowsOnPage]="rowsOnPage"
         [(mfSortBy)]="sortBy"
@@ -86,7 +88,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of mf.data; track item) {
+          @for (item of mf.data; track $index) {
           <tr>
             <td>
               <button (click)="remove(item)" class="btn btn-danger">X</button>
@@ -108,6 +110,7 @@
           </tr>
         </tfoot>
       </table>
+      }
     </div>
   </div>
 </div>
