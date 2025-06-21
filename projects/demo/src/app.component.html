@@ -64,9 +64,9 @@
 
       <table
         class="table table-striped"
-        [mfData]="data.value() | dataFilter : filterQuery"
+        [mfData]="data.value() | dataFilter : filterQuery()"
         #mf="mfDataTable"
-        [mfRowsOnPage]="rowsOnPage"
+        [(mfRowsOnPage)]="rowsOnPage"
         [(mfSortBy)]="sortBy"
         [(mfSortOrder)]="sortOrder"
       >

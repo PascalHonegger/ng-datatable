@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, model } from "@angular/core";
 import { httpResource } from "@angular/common/http";
 import {
   BootstrapPaginator,
@@ -24,10 +24,10 @@ import { UpperCasePipe } from "@angular/common";
   ],
 })
 export class AppComponent {
-  filterQuery = "";
-  rowsOnPage = 10;
-  sortBy: SortBy = "email";
-  sortOrder: SortOrder = "asc";
+  filterQuery = model<string>("");
+  rowsOnPage = model(10);
+  sortBy = model<SortBy>("email");
+  sortOrder = model<SortOrder>("asc");
 
   data = httpResource<any[]>(() => "/data.json", {
     defaultValue: [],
