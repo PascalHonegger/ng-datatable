@@ -5,11 +5,10 @@ import {
   DoCheck,
   IterableDiffers,
   IterableDiffer,
-  Output,
   inject,
   SimpleChanges,
   model,
-  output
+  output,
 } from "@angular/core";
 import { ReplaySubject } from "rxjs";
 
@@ -45,8 +44,8 @@ export class DataTable<T = any> implements OnChanges, DoCheck {
 
   readonly sortBy = model<SortBy<T>>("", { alias: "mfSortBy" });
   readonly sortOrder = model<SortOrder>("asc", { alias: "mfSortOrder" });
-  @Output("mfSortByChange") sortByChange = new EventEmitter<SortBy<T>>();
-  readonly sortOrderChange = output<SortOrder>({ alias: 'mfSortOrderChange' });
+  readonly sortByChange = output<SortBy<T>>({ alias: "mfSortByChange" });
+  readonly sortOrderChange = output<SortOrder>({ alias: "mfSortOrderChange" });
 
   readonly rowsOnPage = model(1000, { alias: "mfRowsOnPage" });
   readonly activePage = model(1, { alias: "mfActivePage" });
