@@ -1,9 +1,11 @@
 // @ts-check
+import { defineConfig } from 'eslint/config';
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import angularEslint from "angular-eslint";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
-export default tseslint.config(
+export default defineConfig(
   {
     files: ["**/*.ts"],
     extends: [
@@ -11,6 +13,7 @@ export default tseslint.config(
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
       ...angularEslint.configs.tsRecommended,
+      eslintConfigPrettier
     ],
     processor: angularEslint.processInlineTemplates,
     rules: {
@@ -28,6 +31,7 @@ export default tseslint.config(
     extends: [
       ...angularEslint.configs.templateRecommended,
       ...angularEslint.configs.templateAccessibility,
+      eslintConfigPrettier
     ],
     rules: {
       "@angular-eslint/template/click-events-have-key-events": "off",

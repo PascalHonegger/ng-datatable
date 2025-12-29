@@ -1,211 +1,168 @@
-import { Directive, Input, EventEmitter, OnChanges, DoCheck, IterableDiffers, IterableDiffer, Output, inject, SimpleChanges } from "@angular/core";
-import { ReplaySubject } from "rxjs";
+import { Directive, input, model, effect, untracked, computed } from '@angular/core';
+import { Subject } from 'rxjs';
 
-
-export type SortOrder = "asc" | "desc";
+export type SortOrder = 'asc' | 'desc';
 export type SortByFunction<T = any> = (data: T) => any;
 export type SortBy<T = any> = string | SortByFunction<T> | (string | SortByFunction<T>)[];
 
 export interface SortEvent {
-    sortBy: SortBy;
-    sortOrder: string;
+  sortBy: SortBy;
+  sortOrder: string;
 }
 
 export interface PageEvent {
-    activePage: number;
-    rowsOnPage: number;
-    dataLength: number;
+  activePage: number;
+  rowsOnPage: number;
+  dataLength: number;
 }
 
 export interface DataEvent {
-    length: number;
+  length: number;
 }
 
 @Directive({
-    selector: "table[mfData]",
-    exportAs: "mfDataTable"
+  selector: 'table[mfData]',
+  exportAs: 'mfDataTable',
 })
-export class DataTable<T = any> implements OnChanges, DoCheck {
+export class DataTable<T = any> {
+  readonly inputData = input<readonly T[], readonly T[] | null | undefined>([], {
+    alias: 'mfData',
+    transform: (i) => i ?? [],
+  });
 
-    private diff: IterableDiffer<T>;
-    @Input("mfData") public inputData: T[] = [];
+  readonly sortBy = model<SortBy<T>>('', { alias: 'mfSortBy' });
+  readonly sortOrder = model<SortOrder>('asc', { alias: 'mfSortOrder' });
 
-    @Input("mfSortBy") public sortBy: SortBy<T> = "";
-    @Input("mfSortOrder") public sortOrder: SortOrder = "asc";
-    @Output("mfSortByChange") public sortByChange = new EventEmitter<SortBy<T>>();
-    @Output("mfSortOrderChange") public sortOrderChange = new EventEmitter<SortOrder>();
+  readonly rowsOnPage = model(1000, { alias: 'mfRowsOnPage' });
+  readonly activePage = model(1, { alias: 'mfActivePage' });
 
-    @Input("mfRowsOnPage") public rowsOnPage = 1000;
-    @Input("mfActivePage") public activePage = 1;
+  readonly inputDataLength = computed(() => this.inputData().length);
 
-    private mustRecalculateData = false;
+  readonly data = computed<readonly T[]>(() => {
+    const offset = (this.activePage() - 1) * this.rowsOnPage();
 
-    public data: T[];
+    return [...this.inputData()]
+      .sort(this.sorter(this.sortBy(), this.sortOrder()))
+      .slice(offset, offset + this.rowsOnPage());
+  });
 
-    public onSortChange = new ReplaySubject<SortEvent>(1);
-    public onPageChange = new EventEmitter<PageEvent>();
+  onSortChange = new Subject<SortEvent>();
+  onPageChange = new Subject<PageEvent>();
 
-    public constructor() {
-        const differs = inject(IterableDiffers);
+  constructor() {
+    // Events which were published based on the old API, could probably be deleted at some point
+    effect(() => {
+      const sortBy = this.sortBy();
+      const sortOrder = this.sortOrder();
+      if (sortBy) {
+        this.onSortChange.next({ sortBy: sortBy, sortOrder: sortOrder });
+      }
+    });
+    effect(() => {
+      this.onPageChange.next({
+        activePage: this.activePage(),
+        rowsOnPage: this.rowsOnPage(),
+        dataLength: this.inputDataLength(),
+      });
+    });
 
-        this.diff = differs.find([]).create();
+    effect(() => {
+      this.setPage(untracked(this.activePage), this.rowsOnPage());
+    });
+    effect(() => {
+      const inputDataLength = this.inputDataLength();
+      const rowsOnPage = this.rowsOnPage();
+      const activePage = untracked(this.activePage);
+      const lastPage = Math.ceil(inputDataLength / rowsOnPage);
+      const newActivePage = (lastPage < activePage ? lastPage : activePage) || 1;
+      this.activePage.set(newActivePage);
+    });
+  }
+
+  getSort(): SortEvent {
+    return { sortBy: this.sortBy(), sortOrder: this.sortOrder() };
+  }
+
+  setSort(sortBy: SortBy<T>, sortOrder: SortOrder): void {
+    this.sortBy.set(sortBy);
+    this.sortOrder.set(['asc', 'desc'].includes(sortOrder) ? sortOrder : 'asc');
+  }
+
+  getPage(): PageEvent {
+    return {
+      activePage: this.activePage(),
+      rowsOnPage: this.rowsOnPage(),
+      dataLength: this.inputDataLength(),
+    };
+  }
+
+  setPage(activePage: number, rowsOnPage: number): void {
+    if (this.rowsOnPage() !== rowsOnPage || this.activePage() !== activePage) {
+      this.rowsOnPage.set(rowsOnPage);
+      this.activePage.set(
+        this.activePage() !== activePage
+          ? activePage
+          : this.calculateNewActivePage(this.rowsOnPage(), rowsOnPage),
+      );
     }
+  }
 
-    public getSort(): SortEvent {
-        return { sortBy: this.sortBy, sortOrder: this.sortOrder };
-    }
+  private calculateNewActivePage(previousRowsOnPage: number, currentRowsOnPage: number): number {
+    const firstRowOnPage = (this.activePage() - 1) * previousRowsOnPage + 1;
+    const newActivePage = Math.ceil(firstRowOnPage / currentRowsOnPage);
+    return newActivePage;
+  }
 
-    public setSort(sortBy: SortBy<T>, sortOrder: SortOrder): void {
-        if (this.sortBy !== sortBy || this.sortOrder !== sortOrder) {
-            this.sortBy = sortBy;
-            this.sortOrder = ["asc", "desc"].indexOf(sortOrder) >= 0 ? sortOrder : "asc";
-            this.mustRecalculateData = true;
-            this.onSortChange.next({ sortBy: this.sortBy, sortOrder: this.sortOrder });
-            this.sortByChange.emit(this.sortBy);
-            this.sortOrderChange.emit(this.sortOrder);
+  private caseInsensitiveIteratee(sortBy: string | SortByFunction) {
+    return (row: any): any => {
+      let value = row;
+      if (typeof sortBy === 'string' || sortBy instanceof String) {
+        for (const sortByProperty of sortBy.split('.')) {
+          if (value) {
+            value = value[sortByProperty];
+          }
         }
-    }
+      } else if (typeof sortBy === 'function') {
+        value = sortBy(value);
+      }
 
-    public getPage(): PageEvent {
-        return { activePage: this.activePage, rowsOnPage: this.rowsOnPage, dataLength: this.inputData.length };
-    }
+      if ((value && typeof value === 'string') || value instanceof String) {
+        return value.toLowerCase();
+      }
 
-    public setPage(activePage: number, rowsOnPage: number): void {
-        if (this.rowsOnPage !== rowsOnPage || this.activePage !== activePage) {
-            this.activePage = this.activePage !== activePage ? activePage : this.calculateNewActivePage(this.rowsOnPage, rowsOnPage);
-            this.rowsOnPage = rowsOnPage;
-            this.mustRecalculateData = true;
-            this.onPageChange.emit({
-                activePage: this.activePage,
-                rowsOnPage: this.rowsOnPage,
-                dataLength: this.inputData ? this.inputData.length : 0
-            });
+      return value;
+    };
+  }
+
+  private compare(left: any, right: any): number {
+    if (left === right) {
+      return 0;
+    }
+    if (left == null && right != null) {
+      return -1;
+    }
+    if (right == null) {
+      return 1;
+    }
+    return left > right ? 1 : -1;
+  }
+
+  private sorter<T>(sortBy: SortBy<T>, sortOrder: SortOrder): (left: T, right: T) => number {
+    const order = sortOrder === 'desc' ? -1 : 1;
+    if (Array.isArray(sortBy)) {
+      const iteratees = sortBy.map((entry) => this.caseInsensitiveIteratee(entry));
+      return (left, right) => {
+        for (const iteratee of iteratees) {
+          const comparison = this.compare(iteratee(left), iteratee(right)) * order;
+          if (comparison !== 0) {
+            return comparison;
+          }
         }
+        return 0;
+      };
+    } else {
+      const iteratee = this.caseInsensitiveIteratee(sortBy);
+      return (left, right) => this.compare(iteratee(left), iteratee(right)) * order;
     }
-
-    private calculateNewActivePage(previousRowsOnPage: number, currentRowsOnPage: number): number {
-        const firstRowOnPage = (this.activePage - 1) * previousRowsOnPage + 1;
-        const newActivePage = Math.ceil(firstRowOnPage / currentRowsOnPage);
-        return newActivePage;
-    }
-
-    private recalculatePage() {
-        const lastPage = Math.ceil(this.inputData.length / this.rowsOnPage);
-        this.activePage = lastPage < this.activePage ? lastPage : this.activePage;
-        this.activePage = this.activePage || 1;
-
-        this.onPageChange.emit({
-            activePage: this.activePage,
-            rowsOnPage: this.rowsOnPage,
-            dataLength: this.inputData.length
-        });
-    }
-
-    public ngOnChanges(changes: SimpleChanges): any {
-        if (changes["rowsOnPage"]) {
-            this.rowsOnPage = changes["rowsOnPage"].previousValue;
-            this.setPage(this.activePage, changes["rowsOnPage"].currentValue);
-            this.mustRecalculateData = true;
-        }
-        if (changes["sortBy"] || changes["sortOrder"]) {
-            if (["asc", "desc"].indexOf(this.sortOrder) < 0) {
-                console.warn("ng-datatable: value for input mfSortOrder must be one of ['asc', 'desc'], but is:", this.sortOrder);
-                this.sortOrder = "asc";
-            }
-            if (this.sortBy) {
-                this.onSortChange.next({ sortBy: this.sortBy, sortOrder: this.sortOrder });
-            }
-            this.mustRecalculateData = true;
-        }
-        if (changes["inputData"]) {
-            this.inputData = changes["inputData"].currentValue || [];
-            this.diff.diff(this.inputData); // Update diff to prevent duplicate update in ngDoCheck
-            this.recalculatePage();
-            this.mustRecalculateData = true;
-        }
-    }
-
-    public ngDoCheck(): any {
-        const changes = this.diff.diff(this.inputData);
-        if (changes) {
-            this.recalculatePage();
-            this.mustRecalculateData = true;
-        }
-        if (this.mustRecalculateData) {
-            this.fillData();
-            this.mustRecalculateData = false;
-        }
-    }
-
-    private fillData(): void {
-        // this.activePage = this.activePage;
-        // this.rowsOnPage = this.rowsOnPage;
-
-        const offset = (this.activePage - 1) * this.rowsOnPage;
-        // let data = this.inputData;
-        // const sortBy = this.sortBy;
-        // if (typeof sortBy === "string" || sortBy instanceof String) {
-        //     data = orderBy(data, this.caseInsensitiveIteratee(sortBy as string), [this.sortOrder]);
-        // } else {
-        //     data = orderBy(data, sortBy, [this.sortOrder]);
-        // }
-        // data = slice(data, offset, offset + this.rowsOnPage);
-
-        this.data = [...this.inputData]
-            .sort(this.sorter(this.sortBy, this.sortOrder))
-            .slice(offset, offset + this.rowsOnPage);
-    }
-
-    private caseInsensitiveIteratee(sortBy: string | SortByFunction) {
-        return (row: any): any => {
-            let value = row;
-            if (typeof sortBy === "string" || sortBy instanceof String) {
-                for (const sortByProperty of sortBy.split(".")) {
-                    if (value) {
-                        value = value[sortByProperty];
-                    }
-                }
-            } else if (typeof sortBy === "function") {
-                value = sortBy(value);
-            }
-
-            if (value && typeof value === "string" || value instanceof String) {
-                return value.toLowerCase();
-            }
-
-            return value;
-        };
-    }
-
-    private compare(left: any, right: any): number {
-        if (left === right) {
-            return 0;
-        }
-        if (left == null && right != null) {
-            return -1;
-        }
-        if (right == null) {
-            return 1;
-        }
-        return left > right ? 1 : -1;
-    }
-
-    private sorter<T>(sortBy: SortBy<T>, sortOrder: SortOrder): (left: T, right: T) => number {
-        const order = sortOrder === "desc" ? -1 : 1;
-        if (Array.isArray(sortBy)) {
-            const iteratees = sortBy.map((entry) => this.caseInsensitiveIteratee(entry));
-            return (left, right) => {
-                for (const iteratee of iteratees) {
-                    const comparison = this.compare(iteratee(left), iteratee(right)) * order;
-                    if (comparison !== 0) {
-                        return comparison;
-                    }
-                }
-                return 0;
-            };
-        } else {
-            const iteratee = this.caseInsensitiveIteratee(sortBy);
-            return (left, right) => this.compare(iteratee(left), iteratee(right)) * order;
-        }
-    }
+  }
 }

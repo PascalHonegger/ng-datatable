@@ -8,9 +8,8 @@
   },
   "keywords": [
     "angular",
-    "angular20",
+    "angular21",
     "angularcli",
-    "ivy",
     "ng",
     "ng2",
     "ngx",
@@ -19,6 +18,8 @@
     "sort",
     "sorting",
     "signals",
+    "zoneless",
+    "standalone",
     "pnpm"
   ],
   "author": "git@honegger.dev",
@@ -28,10 +29,7 @@
   },
   "homepage": "https://github.com/PascalHonegger/ng-datatable#readme",
   "peerDependencies": {
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0"
-  },
-  "dependencies": {
+    "@angular/core": "^21.0.0",
     "tslib": "^2.0.0"
   }
 }

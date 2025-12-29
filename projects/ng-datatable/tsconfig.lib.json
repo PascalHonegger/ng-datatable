@@ -8,13 +8,10 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "enableResourceInlining": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
 }
