@@ -63,13 +63,6 @@ export class DataTable<T = any> {
         this.onSortChange.next({ sortBy: sortBy, sortOrder: sortOrder });
       }
     });
-    effect(() => {
-      this.onPageChange.next({
-        activePage: this.activePage(),
-        rowsOnPage: this.rowsOnPage(),
-        dataLength: this.inputDataLength(),
-      });
-    });
 
     effect(() => {
       this.setPage(untracked(this.activePage), this.rowsOnPage());
@@ -81,6 +74,13 @@ export class DataTable<T = any> {
       const lastPage = Math.ceil(inputDataLength / rowsOnPage);
       const newActivePage = (lastPage < activePage ? lastPage : activePage) || 1;
       this.activePage.set(newActivePage);
+    });
+    effect(() => {
+      this.onPageChange.next({
+        activePage: this.activePage(),
+        rowsOnPage: this.rowsOnPage(),
+        dataLength: this.inputDataLength(),
+      });
     });
   }
 

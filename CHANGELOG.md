@@ -6,8 +6,9 @@ Changes
 
 - Support zoneless and signals (closes #21) **Breaking Change** ❗
 - Mark input `rowsOnPageSet` of `mfBootstrapPaginator` as required (potentially breaking!)
-- Use Angular 21 (closes #22)
+- Less runtime checks for invalid `sortOrder` (potentially breaking!)
 - Deprecate `DataTableModule`
+- Use Angular 21 (closes #22)
 
 The main API hasn't changed with signals, but **application code will need minor adjustments**, for example:
 
