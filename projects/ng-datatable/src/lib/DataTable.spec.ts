@@ -376,9 +376,9 @@ describe('DataTable directive tests', () => {
         expect(opt.rowsOnPage).toEqual(2);
       });
       testComponent.inputData.set(datatable.inputData().slice(0, -3));
-      expect(datatable.getPage()).toEqual({ activePage: 2, rowsOnPage: 2, dataLength: 5 })
+      expect(datatable.getPage()).toEqual({ activePage: 2, rowsOnPage: 2, dataLength: 5 });
       fixture.detectChanges();
-      expect(datatable.getPage()).toEqual({ activePage: 1, rowsOnPage: 2, dataLength: 2 })
+      expect(datatable.getPage()).toEqual({ activePage: 1, rowsOnPage: 2, dataLength: 2 });
     });
 
     it('should change page when no data on current page after changed inputData', () => {

@@ -10,7 +10,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "publish:prod": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish",
-    "publish:next": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish --tag next"
+    "publish:next": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish --tag next",
+    "format": "prettier --write projects/",
+    "format:check": "prettier --check projects/"
   },
   "author": "git@honegger.dev",
   "license": "MIT",
