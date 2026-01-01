@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 export class Paginator {
   private injectMfTable = inject(DataTable, { optional: true })!;
 
+  /** explicitly specify reference data table, by default the parent `mfData` is injected */
   readonly inputMfTable = input<DataTable>(undefined, { alias: 'mfTable' });
   private readonly mfTable = computed<DataTable>(() => this.inputMfTable() ?? this.injectMfTable);
 

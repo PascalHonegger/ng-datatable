@@ -83,7 +83,9 @@ import { Paginator } from './Paginator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BootstrapPaginator {
-  rowsOnPageSet = input<number[]>([]);
+  /** Specify values for buttons to change number of diplayed rows, e.g. [5, 10, 15] */
+  rowsOnPageSet = input.required<readonly number[]>();
+  /** explicitly specify reference data table, by default the parent `mfData` is injected */
   mfTable = input<DataTable>();
 
   minRowsOnPage = computed<number>(() =>

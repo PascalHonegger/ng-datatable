@@ -1,10 +1,11 @@
 # Changelog
 
-## 20.0.0 (2025-06-20)
+## 21.0.0 (2026-01-01)
 
 Changes
 
 - Support zoneless and signals (closes #21) **Breaking Change** ❗
+- Mark input `rowsOnPageSet` of `mfBootstrapPaginator` as required (potentially breaking!)
 - Use Angular 21 (closes #22)
 - Deprecate `DataTableModule`
 

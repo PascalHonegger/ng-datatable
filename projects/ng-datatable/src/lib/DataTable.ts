@@ -25,15 +25,20 @@ export interface DataEvent {
   exportAs: 'mfDataTable',
 })
 export class DataTable<T = any> {
-  readonly inputData = input<readonly T[], readonly T[] | null | undefined>([], {
+  /** Array of data to display in table */
+  readonly inputData = input.required<readonly T[], readonly T[] | null | undefined>({
     alias: 'mfData',
     transform: (i) => i ?? [],
   });
 
+  /** Sort by parameter */
   readonly sortBy = model<SortBy<T>>('', { alias: 'mfSortBy' });
+  /** Sort order parameter (either `asc` or `desc`, default: `asc`) */
   readonly sortOrder = model<SortOrder>('asc', { alias: 'mfSortOrder' });
 
+  /** Number of rows should be displayed on page (default: `1000`) */
   readonly rowsOnPage = model(1000, { alias: 'mfRowsOnPage' });
+  /** Page number (default: `1`) */
   readonly activePage = model(1, { alias: 'mfActivePage' });
 
   readonly inputDataLength = computed(() => this.inputData().length);

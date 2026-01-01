@@ -23,6 +23,7 @@ import { DataTable, SortBy } from './DataTable';
 export class DefaultSorter<T = any> {
   private readonly mfTable = inject(DataTable<T>);
 
+  /** Specify how to sort data (argument for lodash function [\_.sortBy ](https://lodash.com/docs#sortBy)) */
   readonly sortBy = input.required<SortBy<T>>({ alias: 'by' });
 
   readonly isSortedByMeAsc = computed<boolean>(() => {

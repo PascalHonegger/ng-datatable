@@ -67,20 +67,22 @@ imports: [
 - selector: `table[mfData]`
 - exportAs: `mfDataTable`
 - inputs
-  - `mfData: any[]` - array of data to display in table
-  - `mfRowsOnPage: number` - number of rows should be displayed on page (default: 1000)
-  - `mfActivePage: number` - page number (default: 1)
-  - `mfSortBy: any` - sort by parameter
-  - `mfSortOrder: "asc" | "desc"` - sort order parameter
+  - `mfData: T[]` - Array of data to display in table (**required**)
+  - `mfRowsOnPage: number` - Number of rows should be displayed on page (default: `1000`)
+  - `mfActivePage: number` - Page number (default: `1`)
+  - `mfSortBy: SortBy<T>` - Sort by parameter
+  - `mfSortOrder: SortOrder` - Sort order parameter (either `asc` or `desc`, default: `asc`)
 - outputs
-  - `mfSortByChange: any` - sort by parameter
-  - `mfSortOrderChange: any` - sort order parameter
+  - `mfRowsOnPageChange: number`
+  - `mfActivePageChange: number`
+  - `mfSortByChange: SortBy<T>`
+  - `mfSortOrderChange: SortOrder`
 
 ### `mfDefaultSorter` component
 
 - selector: `mfDefaultSorter`
 - inputs
-  - `by: any` - specify how to sort data (argument for lodash function [\_.sortBy ](https://lodash.com/docs#sortBy))
+  - `by: SortBy<T>` - Specify how to sort data (**required**, argument for lodash function [\_.sortBy ](https://lodash.com/docs#sortBy))
 
 ### `mfBootstrapPaginator` component
 
@@ -88,4 +90,5 @@ Displays buttons for changing current page and number of displayed rows using bo
 
 - selector: `mfBootstrapPaginator`
 - inputs
-  - `rowsOnPageSet: number` - specify values for buttons to change number of diplayed rows
+  - `rowsOnPageSet: number[]` - specify values for buttons to change number of diplayed rows, e.g. [5, 10, 15] (**required**)
+  - `mfTable: DataTable` - explicitly specify reference data table, by default the parent `mfData` is injected
