@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "pnpm run build:lib && ng serve demo",
     "build:lib": "ng build ng-datatable",
+    "build:demo": "ng build demo",
     "test": "ng test",
     "lint": "ng lint",
     "publish:prod": "pnpm run build:lib && cd dist/ng-datatable && pnpm publish",
