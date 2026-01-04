@@ -1,12 +1,34 @@
 # Changelog
 
+## 21.0.0 (2026-01-01)
+
+Changes
+
+- Support zoneless and signals (closes #21) **Breaking Change** ❗
+- Mark input `rowsOnPageSet` of `mfBootstrapPaginator` as required (potentially breaking!)
+- Less runtime checks for invalid `sortOrder` (potentially breaking!)
+- Deprecate `DataTableModule`
+- Use Angular 21 (closes #22)
+
+The main API hasn't changed with signals, but **application code will need minor adjustments**, for example:
+
+```html
+<!-- OLD -->
+@for (item of mf.data; track item) { }
+
+<!-- NEW -->
+@for (item of mf.data(); track item) { }
+```
+
+Some order of outputs could also have changed with the new signals based implementation, make sure to verify your application after updating!
+
 ## 20.0.0 (2025-06-20)
 
 Changes
 
 - Use Angular 20 (closes #20)
 
-*Note: This library does not work with zoneless at the moment, contributions are welcome!*
+_Note: This library does not work with zoneless at the moment, contributions are welcome!_
 
 ## 19.0.0 (2025-01-28)
 

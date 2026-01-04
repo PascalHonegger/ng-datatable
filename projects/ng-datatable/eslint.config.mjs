@@ -1,15 +1,15 @@
 // @ts-check
-import tseslint from "typescript-eslint";
-import rootConfig from "../../eslint.config.mjs";
+import { defineConfig } from 'eslint/config';
+import rootConfig from '../../eslint.config.mjs';
 
-export default tseslint.config(
+export default defineConfig(
   ...rootConfig,
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     rules: {},
   },
   {
-    files: ["**/*.html"],
+    files: ['**/*.html'],
     rules: {},
-  }
+  },
 );

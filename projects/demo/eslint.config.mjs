@@ -1,32 +1,32 @@
 // @ts-check
-import tseslint from "typescript-eslint";
-import rootConfig from "../../eslint.config.mjs";
+import { defineConfig } from 'eslint/config';
+import rootConfig from '../../eslint.config.mjs';
 
-export default tseslint.config(
+export default defineConfig(
   ...rootConfig,
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
+      '@angular-eslint/directive-selector': [
+        'error',
         {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
+          type: 'attribute',
+          prefix: 'app',
+          style: 'camelCase',
         },
       ],
-      "@angular-eslint/component-selector": [
-        "error",
+      '@angular-eslint/component-selector': [
+        'error',
         {
-          type: "element",
-          prefix: "app",
-          style: "kebab-case",
+          type: 'element',
+          prefix: 'app',
+          style: 'kebab-case',
         },
       ],
     },
   },
   {
-    files: ["**/*.html"],
+    files: ['**/*.html'],
     rules: {},
-  }
+  },
 );

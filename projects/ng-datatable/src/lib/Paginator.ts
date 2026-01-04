@@ -1,40 +1,61 @@
-import { Component, OnChanges, inject, input } from "@angular/core";
-import {DataTable, PageEvent} from "./DataTable";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import { DataTable, PageEvent } from './DataTable';
+import { Subscription } from 'rxjs';
 
 @Component({
-    selector: "mfPaginator",
-    template: `<ng-content></ng-content>`
+  selector: 'mfPaginator',
+  template: `<ng-content />`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Paginator implements OnChanges {
-    private injectMfTable = inject(DataTable, { optional: true })!;
+export class Paginator {
+  private injectMfTable = inject(DataTable, { optional: true })!;
 
-    readonly inputMfTable = input<DataTable>(undefined, { alias: "mfTable" });
+  /** explicitly specify reference data table, by default the parent `mfData` is injected */
+  readonly inputMfTable = input<DataTable>(undefined, { alias: 'mfTable' });
+  private readonly mfTable = computed<DataTable>(() => this.inputMfTable() ?? this.injectMfTable);
 
-    private mfTable: DataTable;
+  readonly activePage = signal<number>(0);
+  readonly rowsOnPage = signal<number>(0);
+  readonly dataLength = signal<number>(0);
+  readonly lastPage = computed<number>(() => {
+    const rowsOnPage = this.rowsOnPage();
+    const dataLength = this.dataLength();
+    return rowsOnPage === 0 ? 0 : Math.ceil(dataLength / rowsOnPage);
+  });
 
-    public activePage: number;
-    public rowsOnPage: number;
-    public dataLength = 0;
-    public lastPage: number;
+  constructor() {
+    let currentSubscription: Subscription | undefined = undefined;
+    effect(() => {
+      const currentTable = this.mfTable();
+      this.onPageChangeSubscriber(currentTable.getPage());
+      currentSubscription?.unsubscribe();
+      currentSubscription = currentTable.onPageChange.subscribe(this.onPageChangeSubscriber);
+    });
+    inject(DestroyRef).onDestroy(() => {
+      currentSubscription?.unsubscribe();
+    });
+  }
 
-    public ngOnChanges(): any {
-        this.mfTable = this.inputMfTable() ?? this.injectMfTable;
-        this.onPageChangeSubscriber(this.mfTable.getPage());
-        this.mfTable.onPageChange.subscribe(this.onPageChangeSubscriber);
-    }
+  setPage(pageNumber: number): void {
+    this.mfTable().setPage(pageNumber, this.rowsOnPage());
+  }
 
-    public setPage(pageNumber: number): void {
-        this.mfTable.setPage(pageNumber, this.rowsOnPage);
-    }
+  setRowsOnPage(rowsOnPage: number): void {
+    this.mfTable().setPage(this.activePage(), rowsOnPage);
+  }
 
-    public setRowsOnPage(rowsOnPage: number): void {
-        this.mfTable.setPage(this.activePage, rowsOnPage);
-    }
-
-    private onPageChangeSubscriber = (event: PageEvent) => {
-        this.activePage = event.activePage;
-        this.rowsOnPage = event.rowsOnPage;
-        this.dataLength = event.dataLength;
-        this.lastPage = Math.ceil(this.dataLength / this.rowsOnPage);
-    }
+  private onPageChangeSubscriber = (event: PageEvent) => {
+    this.activePage.set(event.activePage);
+    this.rowsOnPage.set(event.rowsOnPage);
+    this.dataLength.set(event.dataLength);
+  };
 }
