@@ -51,8 +51,8 @@ export class DataTable<T = any> {
       .slice(offset, offset + this.rowsOnPage());
   });
 
-  onSortChange = new Subject<SortEvent>();
-  onPageChange = new Subject<PageEvent>();
+  readonly onSortChange = new Subject<SortEvent>();
+  readonly onPageChange = new Subject<PageEvent>();
 
   constructor() {
     // Events which were published based on the old API, could probably be deleted at some point
