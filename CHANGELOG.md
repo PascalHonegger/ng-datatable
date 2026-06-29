@@ -1,5 +1,11 @@
 # Changelog
 
+## 22.0.0 (2026-06-29)
+
+Changes
+
+- Use Angular 22
+
 ## 21.0.0 (2026-01-04)
 
 Changes

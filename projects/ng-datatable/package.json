@@ -1,6 +1,6 @@
 {
   "name": "@pascalhonegger/ng-datatable",
-  "version": "21.0.0",
+  "version": "22.0.0",
   "description": "DataTable component for Angular framework",
   "repository": {
     "type": "git",
@@ -8,7 +8,7 @@
   },
   "keywords": [
     "angular",
-    "angular21",
+    "angular22",
     "angularcli",
     "ng",
     "ng2",
